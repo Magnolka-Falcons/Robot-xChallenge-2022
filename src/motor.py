@@ -42,7 +42,7 @@ class Motor:
             self._pwmFwd.start(speed)
             self._pwmRev.start(0)
 
-    def driveBack(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY): #name these pwm to your liking
+    def driveBackwards(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY): #name these pwm to your liking
         GPIO.setup(pinPwm1,  GPIO.OUT)
         GPIO.setup(pinPwm2, GPIO.OUT)
 
@@ -52,7 +52,7 @@ class Motor:
         self.pwm1.start(1)
         self.pwm2.start(1)
 
-    def driveStraight(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY):
+    def driveForward(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY):
         GPIO.setup(pinPwm1,  GPIO.OUT)
         GPIO.setup(pinPwm2, GPIO.OUT)
 
