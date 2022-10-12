@@ -18,8 +18,11 @@ class Motor:
 
     def stop(self):
 
-        self._pwmFwd.start(0)
-        self._pwmRev.start(0)
+        #self._pwmFwd.start(0)
+        #self._pwmRev.start(0)
+
+        self._pwmFwd.stop()
+        self._pwmRev.stop()
 
     def run(self, speed=None):
         if speed == None:
@@ -38,3 +41,24 @@ class Motor:
         else:
             self._pwmFwd.start(speed)
             self._pwmRev.start(0)
+
+    def driveBack(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY): #name these pwm to your liking
+        GPIO.setup(pinPwm1,  GPIO.OUT)
+        GPIO.setup(pinPwm2, GPIO.OUT)
+
+        self.pwm1 = GPIO.PWM(pinPwm1, frequency)
+        self.pwm2 = GPIO.PWM(pinPwm2, frequency)
+
+        self.pwm1.start(1)
+        self.pwm2.start(1)
+
+    def driveStraight(self, pinPwm1, pinPwm2, frequency=Constants.PWM.FREQUENCY):
+        GPIO.setup(pinPwm1,  GPIO.OUT)
+        GPIO.setup(pinPwm2, GPIO.OUT)
+
+        self.pwm1 = GPIO.PWM(pinPwm1, frequency)
+        self.pwm2 = GPIO.PWM(pinPwm2, frequency)
+
+        self.pwm1.start(1)
+        self.pwm2.start(0)
+        
