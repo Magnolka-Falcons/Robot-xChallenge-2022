@@ -16,9 +16,6 @@ class Robot(Node):
     def __init__(self, name):
         super().__init__(name)
         self.get_logger().info("%s is starting" % name)
-
-        self.speed = 0.0
-
         front_left_motor = Motor(True,
                                  Constants.Motors.FRONT_LEFT_MOTOR_PWM_PIN,
                                  Constants.Motors.LEFT_REV_PIN)
@@ -32,6 +29,8 @@ class Robot(Node):
         back_right_motor = Motor(False,
                                  Constants.Motors.BACK_RIGHT_MOTOR_PWM_PIN,
                                  Constants.Motors.RIGHT_REV_PIN)
+
+        self.speed = 0.0
 
         self.tank_drive = TankDrive(front_left_motor, front_right_motor,
                                     back_left_motor, back_right_motor)

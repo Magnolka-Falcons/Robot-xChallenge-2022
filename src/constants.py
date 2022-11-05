@@ -4,14 +4,16 @@ class Constants:
         FREQUENCY = 8000  # Hz
 
     class Motors:
-        # PIN GPIO COLOR
-        # 18  24   VIOLET
-        # 13  27   BLUE
-        # 12  18   BROWN
-        # 18  10   YELLOW
-        # 10  15   ORANGE
-        # 15  22   WHITE
-        # 9   GND  BLACK
+        # _________________________
+        # | PIN  | GPIO |  COLOR  |
+        # |  18  | 24   |  VIOLET |
+        # |  13  | 27   |  BLUE   |
+        # |  12  | 18   |  BROWN  |
+        # |  18  | 10   |  YELLOW |
+        # |  10  | 15   |  ORANGE |
+        # |  15  | 22   |  WHITE  |
+        # |  9   | GND  |  BLACK  |
+        # ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
         LEFT_REV_PIN = 15
         RIGHT_REV_PIN = 22

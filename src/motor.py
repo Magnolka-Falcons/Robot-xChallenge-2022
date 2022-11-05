@@ -4,14 +4,20 @@ import RPi.GPIO as GPIO
 
 
 class Motor:
-    def __init__(self, reverse: bool, pinFwdPwm: int, pinRev: int, frequency=Constants.PWM.FREQUENCY, maxSpeed=100):
+    def __init__(self, reversed: bool, pinFwdPwm: int, pinRev: int, frequency=Constants.PWM.FREQUENCY, maxSpeed=100):
+        """
+         Create motor object.
+
+        `reversed`- If motor is spinning wrong way, set True.
+        `frequency`- PWM frequency
+        """
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(pinFwdPwm,  GPIO.OUT)
         GPIO.setup(pinRev, GPIO.OUT)
 
-        self.pinRev = pinRev
-        self._reverse = reverse
+        self._pinRev = pinRev
+        self._reversed = reversed
 
         self._frequency = frequency
         self._maxSpeed = maxSpeed
@@ -33,14 +39,14 @@ class Motor:
 
         print(speed)
 
-        if self._reverse:
+        if self._reversed:
             speed = speed*-1
-        print(self._reverse)
+        print(self._reversed)
 
         if speed < 0:
-            GPIO.output(self.pinRev, GPIO.HIGH)
+            GPIO.output(self._pinRev, GPIO.HIGH)
         else:
-            GPIO.output(self.pinRev, GPIO.LOW)
+            GPIO.output(self._pinRev, GPIO.LOW)
 
         self._pwm.start(abs(speed))
 
