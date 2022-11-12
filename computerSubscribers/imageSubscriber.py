@@ -10,9 +10,9 @@ class imageSubscriber(Node):
         super().__init__('image_subscriber')
         self.subscription = self.create_subscription(
             Image,
-            'video_frames',
+            'camera_node',
             self.listener_callback,
-            10)
+            1)
         self.subscription
 
         self.br = CvBridge()
