@@ -1,4 +1,4 @@
-from motor import Motor
+from .motor import Motor
 
 
 class TankDrive:
@@ -13,8 +13,8 @@ class TankDrive:
         self._back_right_motor = back_righ_motor
 
     def drive(self, speed, turn):
-        left_speed = speed + turn * 0.3
-        right_speed = speed - turn * 0.3
+        left_speed = speed + turn * 0.6
+        right_speed = speed - turn * 0.6
 
         self._front_left_motor.run(left_speed)
         self._front_right_motor.run(right_speed)
