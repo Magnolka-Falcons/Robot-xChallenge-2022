@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
-from sensor_msgs.msg import CompressedImage
+from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 
@@ -10,7 +10,7 @@ class imageSubscriber(Node):
     def init(self):
         super().init('camera_node')
         self.subscription = self.create_subscription(
-            CompressedImage,
+            Image,
             'camera_node',
             self.listener_callback,
             1)
@@ -32,9 +32,9 @@ class imageSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    image_subscriber = imageSubscriber('camera')
+    camera_node = imageSubscriber()
 
-    rclpy.spin(image_subscriber)
+    rclpy.spin(camera_node)
 
     rclpy.shutdown()
 
