@@ -13,7 +13,7 @@ class imageSubscriber(Node):
             Image,
             'camera_node',
             self.listener_callback,
-            1)
+            10)
         self.subscription
 
         self.br = CvBridge()
