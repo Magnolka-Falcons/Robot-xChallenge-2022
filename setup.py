@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'robot = robot-xchallange-2022.launch:main'
+            'robot = robot-xchallange-2022.launch:generate_launch_description'
         ],
     },
 )

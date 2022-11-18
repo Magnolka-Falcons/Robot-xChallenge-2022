@@ -7,7 +7,6 @@ from collections import deque
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import CompressedImage
-from std_msgs.msg import String
 
 from cv_bridge import CvBridge
 
@@ -21,7 +20,7 @@ class CameraNode(Node):
             CompressedImage,
             'camera_node',
             1)
-        timer_period = 0.5  # seconds
+        timer_period = 1/30  # seconds/
         self.timer = self.create_timer(timer_period, self.timer_callback)
         # self.i = 0
 
@@ -68,7 +67,11 @@ def main():
     rclpy.init()
 
     imagePublisher = CameraNode('camera_node')
-    rclpy.spin(imagePublisher)
+    try:
+        imagePublisher.get_logger().info('Beginning client, shut down with CTRL-C')
+        rclpy.spin(imagePublisher)
+    except KeyboardInterrupt:
+        imagePublisher.get_logger().info('Keyboard interrupt, shutting down.\n')
 
     rclpy.shutdown()
 

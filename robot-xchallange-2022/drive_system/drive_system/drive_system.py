@@ -4,6 +4,10 @@ from .motor import Motor
 from .tank_drive import TankDrive
 from .constants import Constants
 
+# from motor import Motor
+# from tank_drive import TankDrive
+# from constants import Constants
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -56,6 +60,7 @@ class Robot(Node):
         self.get_logger().info('I heard: "%s"' % msg.data)
 
     def _cmd_vel_callback(self, msg):
+        print("HALOOOOOOOOOOOOOO")
         self.speed = msg.linear.x
         self.get_logger().info('I heard: "%s"' % msg.linear.x)
 
@@ -75,7 +80,11 @@ def main(args=None):
     rclpy.init(args=args)
 
     robot = Robot('robot')
-    rclpy.spin(robot)
+    try:
+        robot.get_logger().info('Beginning client, shut down with CTRL-C')
+        rclpy.spin(robot)
+    except KeyboardInterrupt:
+        robot.get_logger().info('Keyboard interrupt, shutting down.\n')
 
     rclpy.shutdown()
 
