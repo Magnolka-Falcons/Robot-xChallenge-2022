@@ -12,6 +12,9 @@ def generate_launch_description():
             Node(
                 package="drive_system",
                 executable="drive_system",
+            ), Node(
+                package="lift",
+                executable="lift_node",
             ),
         ]
     )

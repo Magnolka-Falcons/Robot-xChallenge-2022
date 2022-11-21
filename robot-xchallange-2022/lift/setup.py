@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'drive_system'
+package_name = 'lift'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'drive_system = drive_system.drive_system:main',
+            'lift = lift.lift_node:main',
         ],
     },
 )
