@@ -1,6 +1,6 @@
-.install/
-.log/
-.build/
+*install/
+*log/
+*build/
 
 # Byte-compiled / optimized / DLL files
 .__pycache__/

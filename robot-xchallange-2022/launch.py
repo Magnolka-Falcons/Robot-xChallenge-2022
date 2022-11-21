@@ -6,12 +6,12 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="drive_system",
-                executable="drive_system",
-            ),
-            Node(
                 package="camera",
                 executable="camera",
+            ),
+            Node(
+                package="drive_system",
+                executable="drive_system",
             ),
         ]
     )

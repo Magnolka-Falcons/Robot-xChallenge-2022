@@ -1,12 +1,8 @@
 #! /usr/bin/python3
 
-from .motor import Motor
+from .motor_BLDC import motor_BLDC
 from .tank_drive import TankDrive
 from .constants import Constants
-
-# from motor import Motor
-# from tank_drive import TankDrive
-# from constants import Constants
 
 import rclpy
 from rclpy.node import Node
@@ -19,24 +15,25 @@ class Robot(Node):
     def __init__(self, name):
         super().__init__(name)
         self.get_logger().info("%s is starting..." % name)
-        front_left_motor = Motor(False,
-                                 Constants.Motors.FRONT_LEFT_MOTOR_PWM_PIN,
-                                 Constants.Motors.LEFT_REV_PIN)
-        front_right_motor = Motor(False,
-                                  Constants.Motors.FRONT_RIGHT_MOTOR_PWM_PIN,
-                                  Constants.Motors.RIGHT_REV_PIN)
+        front_left_motor = motor_BLDC(False,
+                                      Constants.Motors.FRONT_LEFT_MOTOR_PWM_PIN,
+                                      Constants.Motors.LEFT_REV_PIN)
+        front_right_motor = motor_BLDC(False,
+                                       Constants.Motors.FRONT_RIGHT_MOTOR_PWM_PIN,
+                                       Constants.Motors.RIGHT_REV_PIN)
 
-        back_left_motor = Motor(False,
-                                Constants.Motors.BACK_LEFT_MOTOR_PWM_PIN,
-                                Constants.Motors.LEFT_REV_PIN)
-        back_right_motor = Motor(False,
-                                 Constants.Motors.BACK_RIGHT_MOTOR_PWM_PIN,
-                                 Constants.Motors.RIGHT_REV_PIN)
+        back_left_motor = motor_BLDC(False,
+                                     Constants.Motors.BACK_LEFT_MOTOR_PWM_PIN,
+                                     Constants.Motors.LEFT_REV_PIN)
+        back_right_motor = motor_BLDC(False,
+                                      Constants.Motors.BACK_RIGHT_MOTOR_PWM_PIN,
+                                      Constants.Motors.RIGHT_REV_PIN)
 
         self.speed = 0.0
 
         self.tank_drive = TankDrive(front_left_motor, front_right_motor,
-                                    back_left_motor, back_right_motor)
+                                    back_left_motor, back_right_motor,
+                                    Constants.Motors.LEFT_BRAKE_PIN, Constants.Motors.RIGHT_BRAKE_PIN)
 
         self._command = self.create_subscription(
             String,
@@ -60,7 +57,6 @@ class Robot(Node):
         self.get_logger().info('I heard: "%s"' % msg.data)
 
     def _cmd_vel_callback(self, msg):
-        print("HALOOOOOOOOOOOOOO")
         self.speed = msg.linear.x
         self.get_logger().info('I heard: "%s"' % msg.linear.x)
 

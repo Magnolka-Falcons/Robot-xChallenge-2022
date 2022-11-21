@@ -1,11 +1,9 @@
 from .constants import Constants
-# from constants import Constants
-
 
 import RPi.GPIO as GPIO
 
 
-class Motor:
+class motor_BLDC:
     def __init__(self, reversed: bool, pinFwdPwm: int, pinRev: int, frequency=Constants.PWM.FREQUENCY, maxSpeed=100):
         """
          Create motor object.
@@ -39,29 +37,12 @@ class Motor:
         elif speed < -100:
             speed = -100
 
-        print(speed)
-
         if self._reversed:
-            speed = speed*-1
-        print(self._reversed)
+            speed = speed * -1
 
-        if speed < 0:
+        if speed <= 0:
             GPIO.output(self._pinRev, GPIO.HIGH)
         else:
             GPIO.output(self._pinRev, GPIO.LOW)
 
         self._pwm.start(abs(speed))
-
-    def driveBackwards(self, motorPin1, motorPin2):
-        GPIO.setup(motorPin1,  GPIO.OUT)
-        GPIO.setup(motorPin2,  GPIO.OUT)
-
-        self.output(motorPin1, True)
-        self.output(motorPin2, True)
-
-    def driveForward(self, motorPin1, motorPin2):
-        GPIO.setup(motorPin1,  GPIO.OUT)
-        GPIO.setup(motorPin2,  GPIO.OUT)
-
-        self.output(motorPin1, True)
-        self.output(motorPin2, False)

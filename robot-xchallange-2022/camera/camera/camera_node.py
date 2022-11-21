@@ -16,18 +16,18 @@ class CameraNode(Node):
         super().__init__(name)
         self.get_logger().info("%s is starting..." % name)
 
+        VIDEO_CAPTURE_ID = 0
+
         self.publisher_ = self.create_publisher(
             CompressedImage,
             'camera_node',
             1)
-        timer_period = 1/30  # seconds/
+        timer_period = 1/120  # seconds/
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        # self.i = 0
-
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(VIDEO_CAPTURE_ID, cv2.CAP_V4L)
         self.frame = deque(maxlen=1)
 
-        blank_image = np.zeros((640, 480, 3), np.uint8)
+        blank_image = np.zeros((480, 848, 3), np.uint8)
         self.frame.append(blank_image)
 
         self.bridge = CvBridge()
@@ -37,15 +37,8 @@ class CameraNode(Node):
         self.camera_thread.daemon = True
         self.camera_thread.start()
 
-    # def timer_callback(self):
-    #     msg = String()
-    #     msg.data = 'Hello World: %d' % self.i
-    #     self.publisher_.publish(msg)
-    #     self.get_logger().info('Publishing: "%s"' % msg.data)
-        # self.i += 1
-
     def timer_callback(self):
-        print("cos")
+        self.get_logger().info("Sending image")
         self.publisher_.publish(
             self.bridge.cv2_to_compressed_imgmsg(self.frame[-1]))
 
@@ -56,6 +49,15 @@ class CameraNode(Node):
         while True:
             if self.camera.isOpened():
                 ret, frame = self.camera.read()
+                if ret:
+                    scale_percent = 100  # percent of original size
+                    width = int(frame.shape[1] * scale_percent / 100)
+                    height = int(frame.shape[0] * scale_percent / 100)
+                    dim = (width, height)
+                    frame = cv2.resize(
+                        frame, dim, interpolation=cv2.INTER_AREA)
+                else:
+                    self.get_logger().error('Frame can\'t be read!')
             else:
                 self.get_logger().error('Camera unavavible!')
 
