@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'lift = lift.lift_node:main',
+            'lift_node = lift.lift_node:main',
         ],
     },
 )
