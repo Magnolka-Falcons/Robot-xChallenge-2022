@@ -19,7 +19,6 @@ class motor_BLDC:
         self._pinRev = pinRev
         self._reversed = reversed
 
-        self._frequency = frequency
         self._maxSpeed = maxSpeed
         self._pwm = GPIO.PWM(pinFwdPwm, frequency)
         self.stop()

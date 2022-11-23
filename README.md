@@ -11,6 +11,13 @@ Robot code prepered fon xChallanege 2022 in Rszeszów.
 pip install RPi.GPIO
 ```
 
+
+## Build package
+To build package navigate to main package folder and run:
+
+```bash
+colcon build
+```
 ## Run programm
 
 #### Source fils:
@@ -22,17 +29,9 @@ pip install RPi.GPIO
 #### Run sungle package:
 
 ```bash
-ros2 run *package_name* *executable_name*
+ros2 run package_name executable_name
 ```
-
-## Build package
-To build package navigate to main package folder and run:
-
-```bash
-colcon build
-```
-
-Package list:
+#### Package list:
 - camera
     - camera
 - drive_system

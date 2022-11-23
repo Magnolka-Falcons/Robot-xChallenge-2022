@@ -57,8 +57,10 @@ class Robot(Node):
         self.get_logger().info('I heard: "%s"' % msg.data)
 
     def _cmd_vel_callback(self, msg):
-        self.speed = msg.linear.x
-        self.get_logger().info('I heard: "%s"' % msg.linear.x)
+        speed = msg.linear.x * 100  # 10 is multiplier to make scale from 0-100%
+        turn = msg.linear.y * 100
+        self.tank_drive.drive(speed, turn)
+        self.get_logger().info('Speed: ' + str(speed) + '% , Turn: ' + str(turn) + "%.")
 
     def _cmd_joy_callback(self, msg: Joy):
         speed = msg.axes[1] * 100  # 10 is multiplier to make scale from 0-100%
