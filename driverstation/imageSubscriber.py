@@ -29,7 +29,7 @@ class imageSubscriber(Node):
 
         current_frame = self.br.compressed_imgmsg_to_cv2(data)
         current_frame = cv2.cvtColor(current_frame, cv2.COLOR_BGR2RGB)
-        # current_frame = cv2.flip(current_frame, 0)
+        current_frame = cv2.flip(current_frame, 0)
         cv2.imshow("camera", current_frame)
 
         cv2.waitKey(1)

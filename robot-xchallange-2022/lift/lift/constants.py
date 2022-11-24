@@ -9,4 +9,4 @@ class Constants:
         REV_PIN_LIFT = 16  # lift
 
         PWM_PIN_GRIPPER = 13
-        REV_PIN_GRIPPER = 19
+        REV_PIN_GRIPPER = 6

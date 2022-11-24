@@ -31,6 +31,11 @@ class Robot(Node):
 
         self.speed = 0.0
 
+        self.SPEED_MULTIPLIER = 0.45
+
+        self.last_speed = None
+        self.last_turn = None
+
         self.tank_drive = TankDrive(front_left_motor, front_right_motor,
                                     back_left_motor, back_right_motor,
                                     Constants.Motors.LEFT_BRAKE_PIN, Constants.Motors.RIGHT_BRAKE_PIN)
@@ -66,11 +71,11 @@ class Robot(Node):
         speed = msg.axes[1] * 100  # 10 is multiplier to make scale from 0-100%
         turn = msg.axes[3] * 100
 
-        speed_multiplier = 0.45
-
-        self.get_logger().info('Speed: ' + str(speed) + '% , Turn: ' + str(turn) + "%.")
-
-        self.tank_drive.drive(speed * speed_multiplier, turn)
+        if speed != self.last_speed or turn != self.last_turn:
+            self.get_logger().info('Speed: ' + str(speed) + '% , Turn: ' + str(turn) + "%.")
+            self.tank_drive.drive(speed * self.SPEED_MULTIPLIER, turn)
+            self.last_speed = speed
+            self.last_turn = turn
 
 
 # to run joystick node run this commnad in terminal

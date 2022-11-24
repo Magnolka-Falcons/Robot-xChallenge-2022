@@ -21,7 +21,7 @@ class CameraNode(Node):
 
         VIDEO_CAPTURE_ID = 0
 
-        RECORD = True
+        RECORD = False
         self.VIDEO_SAVE_FREQUENCY = 10
 
         self.publisher_ = self.create_publisher(
