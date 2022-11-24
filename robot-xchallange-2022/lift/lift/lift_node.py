@@ -15,7 +15,9 @@ class Lift_node(Node):
         self.get_logger().info("%s is starting..." % name)
 
         self.lift_motor = motor_DC(Constants.Motors.PWM_PIN_LIFT,
-                                   Constants.Motors.REV_PIN_LIFT, speed=10)
+                                   Constants.Motors.REV_PIN_LIFT, default_speed=100)
+        self.gripper_motor = motor_DC(Constants.Motors.PWM_PIN_GRIPPER,
+                                      Constants.Motors.REV_PIN_GRIPPER, default_speed=5)
 
         self._cmd_joy_subscription = self.create_subscription(
             Joy,
@@ -24,20 +26,29 @@ class Lift_node(Node):
             1)
 
     def _cmd_joy_callback(self, msg: Joy):
+        self.lift_callback(msg)
+        self.gripper_callback(msg)
+
+    def lift_callback(self, msg: Joy):
+        if (msg.buttons[4] == 1):
+            self.lift_motor.forward()
+        elif (msg.buttons[5] == 1):
+            self.lift_motor.reverse()
+        else:
+            self.lift_motor.stop()
+
+    def gripper_callback(self, msg: Joy):
         SPEED_MULTIPLIER = 1
 
         if (msg.axes[2] <= 0.8):
             speed = -0.5 * (msg.axes[2]) + 0.5
-            self.lift_motor.drive(speed * 100 * SPEED_MULTIPLIER)
-            self.get_logger().info("speed ax2:" +
-                                   str(speed * 100 * SPEED_MULTIPLIER) + str(msg.axes[2]))
+            self.gripper_motor.drive(speed * 100 * SPEED_MULTIPLIER)
+
         elif (msg.axes[5] <= 0.8):
             speed = -0.5 * (msg.axes[5]) + 0.5
-            self.lift_motor.drive(-speed * 100 * SPEED_MULTIPLIER)
-            self.get_logger().info("speed ax5:" +
-                                   str(speed * 100 * SPEED_MULTIPLIER) + str(msg.axes[5]))
+            self.gripper_motor.drive(-speed * 100 * SPEED_MULTIPLIER)
         else:
-            self.lift_motor.stop()
+            self.gripper_motor.stop()
 
 
 def main(args=None):
