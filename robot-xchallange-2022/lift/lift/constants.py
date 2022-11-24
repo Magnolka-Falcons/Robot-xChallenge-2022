@@ -5,5 +5,8 @@ class Constants:
 
     class Motors:
 
-        PWM_PIN = 26
-        REV_PIN = 19
+        PWM_PIN_LIFT = 26  # lift
+        REV_PIN_LIFT = 16  # lift
+
+        PWM_PIN_GRIPPER = 0
+        REV_PIN_ = 0
