@@ -21,14 +21,14 @@ class CameraNode(Node):
 
         VIDEO_CAPTURE_ID = 0
 
-        RECORD = False
+        RECORD = True
         self.VIDEO_SAVE_FREQUENCY = 10
 
         self.publisher_ = self.create_publisher(
             CompressedImage,
             'camera_node',
             1)
-        timer_period = 1/120  # seconds/
+        timer_period = 1/20  # seconds/
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.camera = cv2.VideoCapture(VIDEO_CAPTURE_ID, cv2.CAP_V4L)
         self.frame = deque(maxlen=1)
@@ -76,7 +76,7 @@ class CameraNode(Node):
             if self.camera.isOpened():
                 ret, frame = self.camera.read()
                 if ret:
-                    scale_percent = 100  # percent of original size
+                    scale_percent = 80  # percent of original size
                     if scale_percent != 100:
                         width = int(frame.shape[1] * scale_percent / 100)
                         height = int(frame.shape[0] * scale_percent / 100)
