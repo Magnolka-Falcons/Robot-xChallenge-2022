@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 
+import datetime
+from time import time
+
 import threading
 from collections import deque
 
@@ -17,6 +20,9 @@ class CameraNode(Node):
         self.get_logger().info("%s is starting..." % name)
 
         VIDEO_CAPTURE_ID = 0
+
+        RECORD = False
+        self.VIDEO_SAVE_FREQUENCY = 60
 
         self.publisher_ = self.create_publisher(
             CompressedImage,
@@ -37,12 +43,31 @@ class CameraNode(Node):
         self.camera_thread.daemon = True
         self.camera_thread.start()
 
+        self.video_thread = threading.Thread(
+            target=self.record_video, args=())
+        self.video_thread.daemon = True
+
+        if RECORD:
+            self.video_thread.start()
+
+    def record_video(self):
+        camera_width = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)
+        camera_height = self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
+
+        video_out = cv2.VideoWriter('/home/ubuntu/robot_ros/Robot-xChallange-2022/video/Video_' + str(datetime.datetime.now()) + '.avi', cv2.VideoWriter_fourcc(
+            'M', 'J', 'P', 'G'), 10, (int(camera_width), int(camera_height)))
+        last_time = time()
+        while time() - last_time < self.VIDEO_SAVE_FREQUENCY:
+            video_out.write(self.frame[-1])
+        video_out.release()
+        self.get_logger().info('Vidoe saved!')
+
+        threading.Thread(
+            target=self.record_video, args=()).start()
+
     def timer_callback(self):
-        self.get_logger().info("Sending image")
         self.publisher_.publish(
             self.bridge.cv2_to_compressed_imgmsg(self.frame[-1]))
-
-        self.get_logger().info("Image sent")
 
     def update_camera(self):
         frame = None
@@ -51,11 +76,12 @@ class CameraNode(Node):
                 ret, frame = self.camera.read()
                 if ret:
                     scale_percent = 100  # percent of original size
-                    width = int(frame.shape[1] * scale_percent / 100)
-                    height = int(frame.shape[0] * scale_percent / 100)
-                    dim = (width, height)
-                    frame = cv2.resize(
-                        frame, dim, interpolation=cv2.INTER_AREA)
+                    if scale_percent != 100:
+                        width = int(frame.shape[1] * scale_percent / 100)
+                        height = int(frame.shape[0] * scale_percent / 100)
+                        dim = (width, height)
+                        frame = cv2.resize(
+                            frame, dim, interpolation=cv2.INTER_AREA)
                 else:
                     self.get_logger().error('Frame can\'t be read!')
             else:

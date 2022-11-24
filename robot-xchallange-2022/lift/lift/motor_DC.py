@@ -16,6 +16,10 @@ class motor_DC:
 
         self.stop()
 
+    def set_default_speed(self, speed):
+        if self._default_speed != speed:
+            self._default_speed = speed
+
     def stop(self):
         self._pinPWM.stop()
         GPIO.output(self._pinREV, GPIO.HIGH)

@@ -18,11 +18,18 @@ class imageSubscriber(Node):
 
         self.br = CvBridge()
 
+        window_name = "camera"
+
+        cv2.namedWindow(window_name, cv2.WINDOW_KEEPRATIO)
+        cv2.setWindowProperty(
+            window_name, cv2.WINDOW_KEEPRATIO, cv2.WINDOW_KEEPRATIO)
+
     def listener_callback(self, data):
         self.get_logger().info('Receiving video frame')
 
         current_frame = self.br.compressed_imgmsg_to_cv2(data)
         current_frame = cv2.cvtColor(current_frame, cv2.COLOR_BGR2RGB)
+        # current_frame = cv2.flip(current_frame, 0)
         cv2.imshow("camera", current_frame)
 
         cv2.waitKey(1)
