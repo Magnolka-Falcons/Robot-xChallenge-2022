@@ -1,6 +1,6 @@
 # Robot-xChallenge2022
 
-Robot code prepered fon xChallanege 2022 in Rszeszów.
+Robot code prepered fon xChallanege 2022 in Rszeszów. You can see some images [here](https://github.com/Magnolka-Falcons/Robot-xChallenge-2022/tree/master/images).
 
 ## Requirements:
 
@@ -53,4 +53,5 @@ ros2 run package_name executable_name
 - BLCD motors 4x
 - DC motors 2x
 
-![xChallenge logo](https://xchallenge.pl/assets/svg/x-logo.svg)
+## Render
+![robot_render](/images/robot.png)
