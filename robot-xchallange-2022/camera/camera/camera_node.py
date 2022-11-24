@@ -21,8 +21,8 @@ class CameraNode(Node):
 
         VIDEO_CAPTURE_ID = 0
 
-        RECORD = False
-        self.VIDEO_SAVE_FREQUENCY = 60
+        RECORD = True
+        self.VIDEO_SAVE_FREQUENCY = 10
 
         self.publisher_ = self.create_publisher(
             CompressedImage,
@@ -54,11 +54,12 @@ class CameraNode(Node):
         camera_width = self.camera.get(cv2.CAP_PROP_FRAME_WIDTH)
         camera_height = self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
-        video_out = cv2.VideoWriter('/home/ubuntu/robot_ros/Robot-xChallange-2022/video/Video_' + str(datetime.datetime.now()) + '.avi', cv2.VideoWriter_fourcc(
-            'M', 'J', 'P', 'G'), 10, (int(camera_width), int(camera_height)))
+        video_out = cv2.VideoWriter('/home/ubuntu/robot_ros/Robot-xChallange-2022/video/Video_' + str(datetime.datetime.now()) + '.avi',
+                                    cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (int(camera_width), int(camera_height)))
         last_time = time()
         while time() - last_time < self.VIDEO_SAVE_FREQUENCY:
-            video_out.write(self.frame[-1])
+            frame = cv2.cvtColor(self.frame[-1], cv2.COLOR_BGR2RGB)
+            video_out.write(frame)
         video_out.release()
         self.get_logger().info('Vidoe saved!')
 
@@ -102,7 +103,3 @@ def main():
         imagePublisher.get_logger().info('Keyboard interrupt, shutting down.\n')
 
     rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()

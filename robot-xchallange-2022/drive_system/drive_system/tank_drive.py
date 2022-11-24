@@ -21,8 +21,8 @@ class TankDrive:
         GPIO.setup(self._brake_pin_right, GPIO.OUT)
 
     def drive(self, speed, turn):
-        left_speed = speed + turn * 0.6
-        right_speed = speed - turn * 0.6
+        left_speed = speed + turn * 0.5
+        right_speed = speed - turn * 0.5
 
         self._front_left_motor.run(left_speed)
         self._front_right_motor.run(right_speed)

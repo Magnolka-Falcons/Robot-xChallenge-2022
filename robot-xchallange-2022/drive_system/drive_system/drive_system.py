@@ -15,17 +15,17 @@ class Robot(Node):
     def __init__(self, name):
         super().__init__(name)
         self.get_logger().info("%s is starting..." % name)
-        front_left_motor = motor_BLDC(False,
+        front_left_motor = motor_BLDC(True,
                                       Constants.Motors.FRONT_LEFT_MOTOR_PWM_PIN,
                                       Constants.Motors.LEFT_REV_PIN)
-        front_right_motor = motor_BLDC(False,
+        front_right_motor = motor_BLDC(True,
                                        Constants.Motors.FRONT_RIGHT_MOTOR_PWM_PIN,
                                        Constants.Motors.RIGHT_REV_PIN)
 
-        back_left_motor = motor_BLDC(False,
+        back_left_motor = motor_BLDC(True,
                                      Constants.Motors.BACK_LEFT_MOTOR_PWM_PIN,
                                      Constants.Motors.LEFT_REV_PIN)
-        back_right_motor = motor_BLDC(False,
+        back_right_motor = motor_BLDC(True,
                                       Constants.Motors.BACK_RIGHT_MOTOR_PWM_PIN,
                                       Constants.Motors.RIGHT_REV_PIN)
 
@@ -66,9 +66,11 @@ class Robot(Node):
         speed = msg.axes[1] * 100  # 10 is multiplier to make scale from 0-100%
         turn = msg.axes[3] * 100
 
+        speed_multiplier = 0.45
+
         self.get_logger().info('Speed: ' + str(speed) + '% , Turn: ' + str(turn) + "%.")
 
-        self.tank_drive.drive(speed, turn)
+        self.tank_drive.drive(speed * speed_multiplier, turn)
 
 
 # to run joystick node run this commnad in terminal

@@ -26,12 +26,10 @@ class motor_DC:
 
     def forward(self):
         GPIO.output(self._pinREV, GPIO.HIGH)
-
         self._pinPWM.start(self._default_speed)
 
     def reverse(self):
         GPIO.output(self._pinREV, GPIO.LOW)
-
         self._pinPWM.start(self._default_speed)
 
     def drive(self, speed):

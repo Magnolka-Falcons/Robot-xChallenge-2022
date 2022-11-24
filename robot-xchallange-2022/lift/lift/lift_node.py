@@ -25,25 +25,23 @@ class Lift_node(Node):
             self._cmd_joy_callback,
             1)
 
-        self.lift_motor.set_default_speed(100)
-
     def _cmd_joy_callback(self, msg: Joy):
         self.lift_callback(msg)
         self.gripper_callback(msg)
 
     def lift_callback(self, msg: Joy):
         if (msg.buttons[4] == 1):
-            self.gripper_motor.drive(100)
+            self.lift_motor.forward()
         elif (msg.buttons[5] == 1):
-            self.gripper_motor.drive(-100)
+            self.lift_motor.reverse()
         else:
             self.lift_motor.stop()
 
     def gripper_callback(self, msg: Joy):
         if msg.buttons[0] == 1:
-            self.lift_motor.set_default_speed(10)
+            self.gripper_motor.set_default_speed(10)
         else:
-            self.lift_motor.set_default_speed(5)
+            self.gripper_motor.set_default_speed(5)
         SPEED_MULTIPLIER = 1
 
         if (msg.axes[2] <= 0.8):
